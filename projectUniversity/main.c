@@ -6,12 +6,14 @@
 void merge(int arr[], int l, int m,int r);
 void mergeSort(int arr[], int l, int r);
 void swap(int *xp, int *yp);
+void selectionSort(int arr[], int n);
+void fill(int arr[], int n);
 
 int main(){
 
 	srand(time(0));
 
-	    int sizes[] = {1000, 2000, 3000, 4000};
+	int sizes[] = {1000, 2000, 3000, 4000};
     int itemSize = sizeof(sizes) / sizeof(sizes[0]);
 
     for(int i=0; i < itemSize; i++){
@@ -19,16 +21,20 @@ int main(){
         int arr[n];
         fill(arr, n);
 
-        clock_t start = clock();
+        clock_t start1 = clock();
         selectionSort(arr, n);
-        clock_t end = clock();
+        clock_t end1 = clock();
+		double time_selection = ((double)(end1 - start1)) / CLOCKS_PER_SEC;
 
-        double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
+		clock_t start2 = clock();
+		mergeSort(arr,0, n-1);
+		clock_t end2 = clock();
 
-        printf("time taken to sort an array of size %d: %f sec\n", n, time_taken);
+        double time_merge = ((double)(end2 - start2)) / CLOCKS_PER_SEC;
+        printf("Selection Sort with an array of size %d: %f sec\n", n, time_selection);
+        printf("Merge Sort with an array of size %d: %f sec\n", n, time_merge);
     }
-
-
+    return 0;
 
 }
 
@@ -101,8 +107,9 @@ void selectionSort(int arr[], int n){
         }
         swap(&arr[min], &arr[i]);
     }
-
 }
+
+
 void fill(int arr[], int n){
     for(int i=0; i < n; i++){
         arr[i] = rand() % 10000; // randoom number between 0 & 9999
